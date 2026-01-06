@@ -1,0 +1,127 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gift Prank</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;overflow:hidden;}
+.page{display:none;width:100vw;height:100vh;position:relative;text-align:center}
+
+/* PAGE 1 */
+#page1{
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  background:linear-gradient(#6ec6ff,#cfefff);
+}
+
+/* RAIN */
+.rain{
+  position:absolute;width:2px;height:22px;background:rgba(255,255,255,.8);
+  animation:fall linear infinite;
+}
+@keyframes fall{from{transform:translateY(-100px)}to{transform:translateY(110vh)}}
+
+/* GIFT */
+.gift{font-size:96px;animation:pulse 1.4s infinite}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+
+input,button{
+  padding:12px;width:80%;max-width:320px;margin-top:12px;font-size:16px;border-radius:8px
+}
+button{border:none;background:#ff4757;color:#fff}
+
+/* PAGE 2 & 3 */
+#page2,#page3{
+  background:#000;color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column
+}
+
+#numbers{
+  font-size:28px;font-weight:700;line-height:1.4;white-space:pre-wrap
+}
+.warning{margin-top:16px;color:#ff6b6b}
+.linkBtn{margin-top:14px;background:#1e90ff}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div id="page1" class="page">
+  <div class="gift">🎁</div>
+  <h3>Enter your name</h3>
+  <input id="uname" placeholder="Your Name">
+  <button onclick="goDOB()">Submit</button>
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="page">
+  <h3>What is your Date of Birth</h3>
+  <input type="date" id="dob">
+  <button onclick="startPrank()">Continue</button>
+</div>
+
+<!-- PAGE 3 -->
+<div id="page3" class="page">
+  <div id="content"></div>
+</div>
+
+<script>
+/* page control */
+function show(id){
+  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+  document.getElementById(id).style.display='flex';
+}
+show('page1');
+
+/* rain create */
+for(let i=0;i<160;i++){
+  const d=document.createElement('div');
+  d.className='rain';
+  d.style.left=Math.random()*100+'vw';
+  d.style.animationDuration=(1+Math.random()*2)+'s';
+  d.style.animationDelay=Math.random()*5+'s';
+  document.getElementById('page1').appendChild(d);
+}
+
+function goDOB(){
+  if(!uname.value){alert('Name daalo');return;}
+  show('page2');
+}
+
+function startPrank(){
+  if(!dob.value){alert('DOB daalo');return;}
+  show('page3');
+
+  const c=document.getElementById('content');
+  const colors=['red','yellow','lime','cyan','magenta','orange','white'];
+  let start=Date.now();
+
+  const interval=setInterval(()=>{
+    let text='';
+    for(let i=0;i<400;i++) text+='01 ';
+    c.innerHTML=`<div id="numbers" style="color:${colors[Math.floor(Math.random()*colors.length)]}">${text}</div>`;
+    if(Date.now()-start>5000){ // 3 seconds
+      clearInterval(interval);
+      showWarning();
+    }
+  },200);
+}
+
+function showWarning(){
+  const c=document.getElementById('content');
+  c.innerHTML=`
+    <h3>${uname.value}</h3>
+    <div class="warning">
+      ⚠️ Dhanyavad! Aapke mobile ka pura data aur photo video  dusre mobile me transfer ho chuka hai...<br>
+      <small>()</small>
+    </div>
+    <button class="linkBtn" onclick="openYT()">CLICK ME</button>
+  `;
+}
+
+function openYT(){
+  window.open('https://www.youtube.com/@MukeshPrajapati-v3k');
+}
+</script>
+</body>
+</html>
